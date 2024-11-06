@@ -55,6 +55,17 @@ st.dataframe(df_selection)
 # Calcular o estoque disponível
 df_selection["Estoque_disponivel"] = df_selection["Total_unidades"] - df_selection["Unidades_kg"]
 
+# Gráfico de Pizza de Estoque Disponível por Tipo de Tecido
+df_estoque = df_selection.groupby("Tecido")["Estoque_disponivel"].sum().reset_index()
+fig_pizza_estoque = px.pie(
+    df_estoque, 
+    names="Tecido", 
+    values="Estoque_disponivel",
+    title="Estoque Disponível por Tipo de Tecido",
+    labels={"Estoque_disponivel": "Estoque Disponível", "Tecido": "Tecido"}
+)
+st.plotly_chart(fig_pizza_estoque, use_container_width=True)
+
 # Função para exibir gráficos por tecido
 def exibir_graficos_interativos(tecido_tipo):
     df_tecido = df_selection[df_selection["Tecido"] == tecido_tipo]
@@ -147,14 +158,3 @@ fig_bar_faturamento_total = px.bar(
 # Exibir gráficos de faturamento
 st.plotly_chart(fig_bar_faturamento_por_tecido, use_container_width=True, key="faturamento_por_tecido")
 st.plotly_chart(fig_bar_faturamento_total, use_container_width=True, key="faturamento_total")
-
-# Gráfico de Pizza de Estoque Disponível por Tipo de Tecido
-df_estoque = df_selection.groupby("Tecido")["Estoque_disponivel"].sum().reset_index()
-fig_pizza_estoque = px.pie(
-    df_estoque, 
-    names="Tecido", 
-    values="Estoque_disponivel",
-    title="Estoque Disponível por Tipo de Tecido",
-    labels={"Estoque_disponivel": "Estoque Disponível", "Tecido": "Tecido"}
-)
-st.plotly_chart(fig_pizza_estoque, use_container_width=True)
