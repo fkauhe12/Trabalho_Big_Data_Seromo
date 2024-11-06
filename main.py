@@ -28,16 +28,22 @@ df["Faturamento_total"] = (
 
 # Filtros na barra lateral
 st.sidebar.header("Filtro")
-tecido = st.sidebar.multiselect(
-    "Selecione o Tecido:",
-    options=df["Tecido"].unique(),
-    default=df["Tecido"].unique()
-)
-cor = st.sidebar.multiselect(
-    "Selecione a Cor:",
-    options=df["Cor"].unique(),
-    default=df["Cor"].unique()
-)
+
+# Filtro para Tecidos com opção de Selecionar Todos
+select_all_tecido = st.sidebar.checkbox("Selecionar Todos os Tecidos", value=True)
+tecido_options = df["Tecido"].unique()
+if select_all_tecido:
+    tecido = st.sidebar.multiselect("Selecione o Tecido:", options=tecido_options, default=tecido_options)
+else:
+    tecido = st.sidebar.multiselect("Selecione o Tecido:", options=tecido_options)
+
+# Filtro para Cores com opção de Selecionar Todos
+select_all_cor = st.sidebar.checkbox("Selecionar Todas as Cores", value=True)
+cor_options = df["Cor"].unique()
+if select_all_cor:
+    cor = st.sidebar.multiselect("Selecione a Cor:", options=cor_options, default=cor_options)
+else:
+    cor = st.sidebar.multiselect("Selecione a Cor:", options=cor_options)
 
 # Aplicar filtros ao DataFrame
 df_selection = df.query("Tecido in @tecido and Cor in @cor")
@@ -62,10 +68,8 @@ def exibir_graficos_interativos(tecido_tipo):
             y="Total_unidades",
             title=f"Quantidade Total de Tecidos por Cor - {tecido_tipo}",
             labels={"Total_unidades": "Total de Unidades", "Cor": "Cor"},
-            hover_data=["Preço_unitario"]
-        )
+            hover_data=["Preço_unitario"])
         st.plotly_chart(fig_bar, use_container_width=True)
-
 
         # Gráfico de Pizza com Estoque Disponível por Cor
         fig_pie = px.pie(
@@ -86,7 +90,7 @@ def exibir_graficos_interativos(tecido_tipo):
             st.markdown(f"**Cores em falta no estoque:** {', '.join(cores_em_falta)}")
         else:
             st.markdown("**Não há cores em falta no estoque.**")
-            
+
         # Gráfico de Linha para Total de Unidades, Unidades Vendidas e Estoque Disponível
         st.subheader(f"Evolução do Estoque por Cor - {tecido_tipo}")
 
