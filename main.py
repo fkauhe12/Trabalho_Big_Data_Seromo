@@ -66,15 +66,6 @@ def exibir_graficos_interativos(tecido_tipo):
         )
         st.plotly_chart(fig_bar, use_container_width=True)
 
-        # Identificar cores que estão em falta (Estoque <= 0)
-        df_tecido["Estoque_disponivel"] = df_tecido["Total_unidades"] - df_tecido["Unidades_kg"]
-        cores_em_falta = df_tecido[df_tecido["Estoque_disponivel"] <= 0]["Cor"].unique()
-
-        # Exibir cores em falta abaixo do gráfico
-        if len(cores_em_falta) > 0:
-            st.markdown(f"**Cores em falta no estoque:** {', '.join(cores_em_falta)}")
-        else:
-            st.markdown("**Não há cores em falta no estoque.**")
 
         # Gráfico de Pizza com Estoque Disponível por Cor
         fig_pie = px.pie(
@@ -86,6 +77,16 @@ def exibir_graficos_interativos(tecido_tipo):
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
+        # Identificar cores que estão em falta (Estoque <= 0)
+        df_tecido["Estoque_disponivel"] = df_tecido["Total_unidades"] - df_tecido["Unidades_kg"]
+        cores_em_falta = df_tecido[df_tecido["Estoque_disponivel"] <= 0]["Cor"].unique()
+
+        # Exibir cores em falta abaixo do gráfico
+        if len(cores_em_falta) > 0:
+            st.markdown(f"**Cores em falta no estoque:** {', '.join(cores_em_falta)}")
+        else:
+            st.markdown("**Não há cores em falta no estoque.**")
+            
         # Gráfico de Linha para Total de Unidades, Unidades Vendidas e Estoque Disponível
         st.subheader(f"Evolução do Estoque por Cor - {tecido_tipo}")
 
