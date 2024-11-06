@@ -38,6 +38,9 @@ df_selection = df.query(
 # Titulo
 st.title("Loja de Tecidos Seromo")
 
+# Exibir o DataFrame filtrado
+st.dataframe(df_selection)
+
 # Função para exibir gráficos interativos por tecido
 def exibir_graficos_interativos(tecido_tipo):
     df_tecido = df_selection[df_selection["Tecido"] == tecido_tipo]
