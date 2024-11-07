@@ -6,6 +6,7 @@ import plotly.express as px
 st.set_page_config(
     page_title="Loja Seromo",
     page_icon=":bar_chart:",
+    layout="wide"
 )
 
 # Carregar dados e tratar colunas
@@ -54,7 +55,7 @@ st.dataframe(df_selection)
 # Calcular o estoque disponível
 df_selection["Estoque_disponivel"] = df_selection["Total_unidades"] - df_selection["Unidades_kg"]
 
-# Gráfico de Pizza de estoque disponível por Tipo de Tecido
+# Gráfico de Pizza de Estoque disponível por Tipo de Tecido
 df_estoque = df_selection.groupby("Tecido")["Estoque_disponivel"].sum().reset_index()
 fig_pizza_estoque = px.pie(
     df_estoque, 
