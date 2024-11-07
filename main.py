@@ -66,6 +66,18 @@ fig_pizza_estoque = px.pie(
 )
 st.plotly_chart(fig_pizza_estoque, use_container_width=True)
 
+# Gráfico de Montanha de Saídas por Tipo de Tecido
+df_saida_tecido = df_selection.groupby("Tecido")["Unidades_kg"].sum().reset_index()
+fig_area_saida = px.area(
+    df_saida_tecido, 
+    x="Tecido", 
+    y="Unidades_kg",
+    title="Quantidade de Tecidos Vendidos por Tipo de Tecido",
+    labels={"Unidades_kg": "Quantidade Vendida (Kg)", "Tecido": "Tipo de Tecido"},
+)
+
+st.plotly_chart(fig_area_saida, use_container_width=True)
+
 # Função para exibir gráficos por tecido
 def exibir_graficos_interativos(tecido_tipo):
     df_tecido = df_selection[df_selection["Tecido"] == tecido_tipo]
