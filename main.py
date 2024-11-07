@@ -6,7 +6,6 @@ import plotly.express as px
 st.set_page_config(
     page_title="Loja Seromo",
     page_icon=":bar_chart:",
-    layout="wide"
 )
 
 # Carregar dados e tratar colunas
@@ -55,7 +54,7 @@ st.dataframe(df_selection)
 # Calcular o estoque disponível
 df_selection["Estoque_disponivel"] = df_selection["Total_unidades"] - df_selection["Unidades_kg"]
 
-# Gráfico de Pizza de Estoque Disponível por Tipo de Tecido
+# Gráfico de Pizza de estoque disponível por Tipo de Tecido
 df_estoque = df_selection.groupby("Tecido")["Estoque_disponivel"].sum().reset_index()
 fig_pizza_estoque = px.pie(
     df_estoque, 
@@ -66,7 +65,7 @@ fig_pizza_estoque = px.pie(
 )
 st.plotly_chart(fig_pizza_estoque, use_container_width=True)
 
-# Gráfico de Montanha de Saídas por Tipo de Tecido
+# Gráfico de Area de venda por Tipo de Tecido
 df_saida_tecido = df_selection.groupby("Tecido")["Unidades_kg"].sum().reset_index()
 fig_area_saida = px.area(
     df_saida_tecido, 
@@ -104,15 +103,25 @@ def exibir_graficos_interativos(tecido_tipo):
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
-        # Identificar cores que estão em falta (Estoque <= 0)
+        # Identificar cores que estão em falta
         df_tecido["Estoque_disponivel"] = df_tecido["Total_unidades"] - df_tecido["Unidades_kg"]
         cores_em_falta = df_tecido[df_tecido["Estoque_disponivel"] <= 0]["Cor"].unique()
 
-        # Exibir cores em falta abaixo do gráfico
+        # Exibir cores em falta (Abaixo do Gráfico de Pizza)
         if len(cores_em_falta) > 0:
             st.markdown(f"**Cores em falta no estoque:** {', '.join(cores_em_falta)}")
         else:
             st.markdown("**Não há cores em falta no estoque.**")
+
+        # Gráfico de Área de Vendas por Cor
+        fig_area_vendas = px.area(
+            df_tecido,
+            x="Cor",
+            y="Unidades_kg",
+            title=f"Quantidade Vendida por Cor - {tecido_tipo}",
+            labels={"Unidades_kg": "Quantidade Vendida (Kg)", "Cor": "Cor"}
+        )
+        st.plotly_chart(fig_area_vendas, use_container_width=True)
 
         # Gráfico de Linha para Total de Unidades, Unidades Vendidas e Estoque Disponível
         st.subheader(f"Evolução do Estoque por Cor - {tecido_tipo}")
@@ -130,7 +139,7 @@ def exibir_graficos_interativos(tecido_tipo):
 
         st.plotly_chart(fig_line, use_container_width=True)
 
-# Exibir gráficos interativos para cada tipo de tecido
+# Exibir função gráficos para cada tipo de tecido
 for tecido_tipo in df["Tecido"].unique():
     exibir_graficos_interativos(tecido_tipo)
 
@@ -153,7 +162,7 @@ fig_bar_faturamento_por_tecido = px.bar(
     x="Cor",
     y="Faturamento_total",
     color="Tecido",
-    title="Faturamento por Cor e Tecido",
+    title="Faturamento por Cor e Tecido Individual",
     labels={"Faturamento_total": "Faturamento Total", "Cor": "Cor"},
     text="Faturamento_total"
 )
@@ -169,4 +178,5 @@ fig_bar_faturamento_total = px.bar(
 
 # Exibir gráficos de faturamento
 st.plotly_chart(fig_bar_faturamento_por_tecido, use_container_width=True, key="faturamento_por_tecido")
+
 st.plotly_chart(fig_bar_faturamento_total, use_container_width=True, key="faturamento_total")
