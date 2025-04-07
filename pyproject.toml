@@ -1,5 +1,5 @@
 [project]
-name = "seromo_dashboard"
+name = "dashboard"
 version = "0.1.0"
 description = "Dashboard da loja Seromo"
 authors = [
