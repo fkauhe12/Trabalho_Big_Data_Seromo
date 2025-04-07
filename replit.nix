@@ -1,20 +1,5 @@
 {pkgs}: {
   deps = [
-    pkgs.rustc
-    pkgs.libiconv
-    pkgs.cargo
-    pkgs.libcxx
-    pkgs.chromedriver
-    pkgs.cacert
-    pkgs.zlib
-    pkgs.openjpeg
-    pkgs.libxcrypt
-    pkgs.libwebp
-    pkgs.libtiff
-    pkgs.libjpeg
-    pkgs.libimagequant
-    pkgs.lcms2
-    pkgs.arrow-cpp
     pkgs.tk
     pkgs.tcl
     pkgs.qhull
