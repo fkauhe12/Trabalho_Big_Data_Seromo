@@ -1,12 +1,16 @@
 [project]
-name = "dashboard"
+name = "seromo_dashboard"
 version = "0.1.0"
-description = "Loja Seromo"
-authors = ["Felipe, Gabriel <fkauhe12@gmail.com>"]
+description = "Dashboard da loja Seromo"
+authors = [
+  { name = "Felipe Kauhe de Souza Módena", email = "fkauhe12@gmail.com" }
+]
 requires-python = ">=3.11"
+
 dependencies = [
-    "matplotlib>=3.9.2",
-    "numpy>=2.1.2",
-    "pandas>=2.2.3",
     "streamlit>=1.39.0",
+    "pandas>=2.2.3",
+    "numpy>=2.1.2",
+    "matplotlib>=3.9.2",
+    "plotly>=5.24.1"
 ]
